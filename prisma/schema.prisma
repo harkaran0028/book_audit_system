@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  role        String   // 'admin' | 'reviewer'
+  credentials String
+  createdAt   DateTime @default(now())
+}
+
+model Book {
+  id          String   @id @default(uuid())
+  title       String
+  authors     String
+  createdBy   String
+  publishedBy String
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  timestamp DateTime @default(now())
+  entity    String
+  entityId  String
+  action    String
+  actorId   String
+  diff      String   // JSON stored as string
+  requestId String
+}
+
