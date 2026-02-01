@@ -20,27 +20,27 @@ export async function buildApp() {
 });
 
 
-  // 🌱 Seed initial users (admin + reviewer)
+  //  Seed initial users (admin + reviewer)
   await seedUsers();
 
-  // 📌 Create request context (requestId + timing)
+  //  Create request context (requestId + timing)
   app.addHook('onRequest', requestContext);
 
-  // 🔐 Global authentication hook (runs before every route)
+  //  Global authentication hook (runs before every route)
   app.addHook('preHandler', authMiddleware);
 
-  // 📚 Book CRUD APIs (audit logging happens inside service layer)
+  //  Book CRUD APIs (audit logging happens inside service layer)
   app.register(bookRoutes);
 
-  // 🔎 Audit query APIs (admin only inside routes)
+  //  Audit query APIs (admin only inside routes)
   app.register(auditRoutes);
 
-  // 🏥 Health check
+  //  Health check
   app.get('/health', async () => {
     return { status: 'ok' };
   });
 
-  // 🔒 Admin-only test route (to verify RBAC)
+  //  Admin-only test route (to verify RBAC)
   app.get('/admin-test', { preHandler: adminOnly }, async () => {
     return { secret: 'Admin access granted' };
   });
@@ -48,7 +48,7 @@ export async function buildApp() {
   app.setErrorHandler(errorHandler);
 
 
-  // 📊 Response logging with duration
+  //  Response logging with duration
   app.addHook('onResponse', (req, reply, done) => {
     const ctx = getContext();
     const duration = Date.now() - ctx.startTime;
